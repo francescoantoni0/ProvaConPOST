@@ -3,25 +3,23 @@ package com.example.demo;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.LinkedList;
-
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import jakarta.ws.rs.GET;
 
 @WebServlet(name = "tutorServlet", value = "/tutor-servlet")
 public class TutorServlet extends HttpServlet {
     private Connection con;
-    final private String dbURL = "jdbc:mysql://127.0.0.1:3306/", database = "Tutor", user = "root", password = "";
 
     private boolean connected;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            String dbURL = "jdbc:mysql://127.0.0.1:3306/";
+            String database = "Tutor";
+            String user = "root";
+            String password = "";
             con = DriverManager.getConnection(dbURL + database, user, password);
             connected = true;
         } catch (ClassNotFoundException | SQLException e) {
@@ -40,7 +38,7 @@ public class TutorServlet extends HttpServlet {
 
     //http://localhost:8080/demo_war/tutor-servlet/POST?targa=
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (!connected) {
             resp.sendError(500, "DBMS server error!");
             return;
